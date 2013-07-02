@@ -49,12 +49,19 @@ class Divvy(object):
             res = []
             for row in table_rows:
                 tds = row.xpath('td')
+
+                duration_parts = tds[5].text.split(' ')
+                if len(duration_parts) == 1:
+                    seconds = int(duration_parts[0][:-1])
+                elif len(duration_parts) == 2:
+                    seconds = int(duration_parts[0][:-1])*60 + int(duration_parts[1][:-1])
+
                 res.append({
                     "start_station": tds[1].text,
                     "start_time": tds[2].text,
                     "end_station": tds[3].text,
                     "end_time": tds[4].text,
-                    "duration": tds[5].text,
+                    "duration": seconds,
                     "distance": tds[6].text
                 })
         return res
