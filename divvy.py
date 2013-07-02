@@ -43,7 +43,7 @@ class Divvy(object):
         tree = etree.parse(html_fl, parser)
 
         table_rows = tree.xpath('//*[@id="content"]/div/table/tbody/tr')
-        if table_rows and len(table_rows) == 1 and table_rows[0].xpath('td[@colspan="7"]')[0].text.find("any bikes yet"):
+        if table_rows and len(table_rows) == 1 and table_rows[0].xpath('td[@colspan="7"]') and table_rows[0].xpath('td[@colspan="7"]')[0].text.find("any bikes yet"):
             res = []
         else:
             res = []
@@ -54,6 +54,7 @@ class Divvy(object):
                     "start_time": tds[2].text,
                     "end_station": tds[3].text,
                     "end_time": tds[4].text,
+                    "duration": tds[5].text,
                     "distance": tds[6].text
                 })
         return res
@@ -62,7 +63,7 @@ if __name__ == "__main__":
     d = Divvy()
     d.login('iandees', 'password')
 
-    out = csv.DictWriter(open('divvy_rides.csv', 'w'), ['start_station', 'start_time', 'end_station', 'end_time', 'distance'])
+    out = csv.DictWriter(open('divvy_rides.csv', 'w'), ['start_station', 'start_time', 'end_station', 'end_time', 'distance', 'duration'])
 
     out.writeheader()
     for ride in d.get_rides():
