@@ -57,12 +57,12 @@ class Divvy(object):
                     seconds = int(duration_parts[0][:-1])*60 + int(duration_parts[1][:-1])
 
                 res.append({
+                    "trip_id": tds[0].text,
                     "start_station": tds[1].text,
-                    "start_time": tds[2].text,
+                    "start_date": tds[2].text,
                     "end_station": tds[3].text,
-                    "end_time": tds[4].text,
-                    "duration": seconds,
-                    "distance": tds[6].text
+                    "end_date": tds[4].text,
+                    "duration": seconds
                 })
         return res
 
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     d = Divvy()
     d.login('iandees', 'password')
 
-    out = csv.DictWriter(open('divvy_rides.csv', 'w'), ['start_station', 'start_time', 'end_station', 'end_time', 'distance', 'duration'])
+    out = csv.DictWriter(open('divvy_rides.csv', 'w'), ['trip_id', 'start_station', 'start_date', 'end_station', 'end_date', 'duration'])
 
     out.writeheader()
     for ride in d.get_rides():
